@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Fabricio Vega — Ingeniería de Software</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0D1210; --panel:#141C1A; --panel-2:#182220;
+    --text:#E7ECE9; --muted:#93A29B; --faint:#5A6B64;
+    --accent:#5FE1C0; --accent-warm:#F0B429; --border:#24302C;
+    box-sizing:border-box;
+    padding-top:env(safe-area-inset-top,0px);
+    padding-bottom:env(safe-area-inset-bottom,0px);
+  }
+  *{box-sizing:inherit; margin:0; padding:0;}
+  html{scroll-behavior:smooth; scroll-padding-top:env(safe-area-inset-top,0px);}
+  html,body{height:100%;}
+  body{
+    background:var(--bg); color:var(--text);
+    font-family:'Manrope',sans-serif;
+    line-height:1.55;
+    overflow-x:hidden;
+  }
+  img{max-width:100%;}
+  .wrap{max-width:1080px; margin:0 auto; padding:0 32px;}
+  a{color:inherit;}
+
+  /* ---------- hex pattern ---------- */
+  .hex-field{position:absolute; inset:0; overflow:hidden; opacity:.55; pointer-events:none;}
+  .hex-field svg{position:absolute; top:-10%; right:-12%; width:640px; height:auto; max-width:70vw;}
+
+  /* ---------- nav ---------- */
+  nav{
+    position:sticky; top:0; z-index:20;
+    padding-top:calc(18px + env(safe-area-inset-top,0px));
+    padding-bottom:18px;
+    background:linear-gradient(var(--bg) 70%, transparent);
+  }
+  nav .wrap{display:flex; justify-content:space-between; align-items:center;}
+  .brand{font-family:'JetBrains Mono',monospace; font-size:14px; color:var(--accent); letter-spacing:.02em;}
+  .navlinks{display:flex; gap:28px; font-size:14px; color:var(--muted);}
+  .navlinks a{text-decoration:none; transition:color .15s;}
+  .navlinks a:hover{color:var(--text);}
+
+  /* ---------- hero ---------- */
+  header.hero{position:relative; padding:64px 0 96px;}
+  .hero-grid{display:grid; grid-template-columns:1.3fr 1fr; gap:40px; align-items:center; position:relative; z-index:1;}
+  .eyebrow-path{font-family:'JetBrains Mono',monospace; font-size:13px; color:var(--faint); margin-bottom:22px;}
+  .eyebrow-path span{color:var(--accent);}
+  h1{font-size:clamp(34px,5vw,54px); font-weight:800; line-height:1.08; letter-spacing:-0.01em; max-width:11ch;}
+  .hero p.pitch{margin-top:20px; color:var(--muted); font-size:17px; max-width:46ch;}
+  .hero-cta{margin-top:34px; display:flex; gap:14px; flex-wrap:wrap;}
+  .btn{
+    font-size:14px; font-weight:600; padding:12px 22px; border-radius:8px;
+    text-decoration:none; display:inline-block; transition:transform .15s, background .15s;
+  }
+  .btn-solid{background:var(--accent); color:#0A1210;}
+  .btn-solid:hover{transform:translateY(-2px);}
+  .btn-ghost{border:1px solid var(--border); color:var(--text);}
+  .btn-ghost:hover{border-color:var(--accent); color:var(--accent);}
+
+  .hex-panel{position:relative; aspect-ratio:1/1; display:flex; align-items:center; justify-content:center;}
+  .hex-panel svg{width:100%; height:100%;}
+  .hex-stat{font-family:'JetBrains Mono',monospace; font-size:12px; fill:var(--muted);}
+  .hex-stat-n{font-family:'Manrope',sans-serif; font-weight:800; fill:var(--text);}
+
+  /* ---------- section shell ---------- */
+  section{padding:76px 0; border-top:1px solid var(--border);}
+  .sec-head{display:flex; align-items:baseline; gap:16px; margin-bottom:40px;}
+  .sec-num{font-family:'JetBrains Mono',monospace; color:var(--accent-warm); font-size:14px;}
+  .sec-title{font-size:26px; font-weight:700;}
+  .sec-sub{color:var(--muted); font-size:15px; margin-top:-24px; margin-bottom:40px; max-width:60ch;}
+
+  /* ---------- about ---------- */
+  .about-body{max-width:70ch; color:var(--muted); font-size:17px;}
+  .about-body strong{color:var(--text); font-weight:600;}
+
+  /* ---------- skills as hex chips ---------- */
+  .skill-group{margin-bottom:26px;}
+  .skill-group h4{font-family:'JetBrains Mono',monospace; font-weight:500; font-size:13px; color:var(--faint); margin-bottom:12px;}
+  .chips{display:flex; flex-wrap:wrap; gap:10px;}
+  .chip{
+    font-size:13.5px; padding:8px 16px 8px 14px; color:var(--text);
+    background:var(--panel); border:1px solid var(--border);
+    clip-path:polygon(8% 0,92% 0,100% 50%,92% 100%,8% 100%,0 50%);
+  }
+
+  /* ---------- projects as commit log ---------- */
+  .commit{
+    display:grid; grid-template-columns:120px 1fr; gap:24px;
+    padding:26px 0; border-bottom:1px solid var(--border);
+  }
+  .commit:last-child{border-bottom:none;}
+  .commit-meta{font-family:'JetBrains Mono',monospace; font-size:12.5px; color:var(--faint);}
+  .commit-meta .hash{color:var(--accent);}
+  .commit-meta .branch{display:block; margin-top:6px; color:var(--accent-warm);}
+  .commit h3{font-size:19px; font-weight:700; margin-bottom:8px;}
+  .commit p{color:var(--muted); font-size:15px; max-width:68ch;}
+  .commit .stack{margin-top:14px; display:flex; flex-wrap:wrap; gap:8px;}
+  .stack span{
+    font-family:'JetBrains Mono',monospace; font-size:12px; color:var(--muted);
+    border:1px solid var(--border); padding:3px 9px; border-radius:5px;
+  }
+
+  /* ---------- experience timeline ---------- */
+  .timeline{position:relative; padding-left:28px;}
+  .timeline::before{content:"";position:absolute; left:5px; top:6px; bottom:6px; width:1px; background:var(--border);}
+  .tl-item{position:relative; margin-bottom:36px;}
+  .tl-item:last-child{margin-bottom:0;}
+  .tl-item::before{
+    content:""; position:absolute; left:-28px; top:5px; width:11px; height:11px;
+    background:var(--bg); border:2px solid var(--accent); border-radius:2px;
+  }
+  .tl-date{font-family:'JetBrains Mono',monospace; font-size:12.5px; color:var(--faint); margin-bottom:6px;}
+  .tl-item h3{font-size:17px; font-weight:700; margin-bottom:6px;}
+  .tl-item p{color:var(--muted); font-size:15px; max-width:68ch;}
+
+  /* ---------- contact ---------- */
+  .contact-box{
+    background:var(--panel); border:1px solid var(--border); border-radius:14px;
+    padding:48px 40px; text-align:left;
+  }
+  .contact-box h2{font-size:28px; font-weight:800; margin-bottom:14px; max-width:16ch;}
+  .contact-box p{color:var(--muted); max-width:52ch; margin-bottom:28px;}
+  .contact-links{display:flex; flex-wrap:wrap; gap:14px;}
+
+  footer{padding:32px 0 calc(32px + env(safe-area-inset-bottom,0px)); text-align:center;}
+  footer p{color:var(--faint); font-size:13px; font-family:'JetBrains Mono',monospace;}
+
+  @media (max-width:760px){
+    .hero-grid{grid-template-columns:1fr;}
+    .hex-panel{max-width:280px; margin:36px auto 0;}
+    .commit{grid-template-columns:1fr; gap:8px;}
+    .navlinks{display:none;}
+    .contact-box{padding:32px 22px;}
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="wrap">
+    <div class="brand">fabricio<span style="color:var(--muted)">@</span>vega</div>
+    <div class="navlinks">
+      <a href="#proyectos">proyectos</a>
+      <a href="#habilidades">habilidades</a>
+      <a href="#experiencia">experiencia</a>
+      <a href="#contacto">contacto</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="hex-field">
+    <svg viewBox="0 0 400 400" fill="none">
+      <g stroke="#24302C" stroke-width="1.4">
+        <polygon points="300,40 340,63 340,109 300,132 260,109 260,63"/>
+        <polygon points="340,109 380,132 380,178 340,201 300,178 300,132"/>
+        <polygon points="260,109 300,132 300,178 260,201 220,178 220,132"/>
+        <polygon points="220,178 260,201 260,247 220,270 180,247 180,201"/>
+        <polygon points="260,247 300,270 300,316 260,339 220,316 220,270"/>
+        <polygon points="300,178 340,201 340,247 300,270 260,247 260,201"/>
+        <polygon points="180,247 220,270 220,316 180,339 140,316 140,270"/>
+      </g>
+      <polygon points="260,109 300,132 300,178 260,201 220,178 220,132" fill="#5FE1C033" stroke="#5FE1C0" stroke-width="1.6"/>
+      <polygon points="300,178 340,201 340,247 300,270 260,247 260,201" fill="#F0B42922" stroke="#F0B429" stroke-width="1.2"/>
+    </svg>
+  </div>
+  <div class="wrap hero-grid">
+    <div>
+      <div class="eyebrow-path">~/fabricio<span>/ingenieria-de-software</span></div>
+      <h1>Construyo software con datos detrás de cada decisión.</h1>
+      <p class="pitch">Estudiante de Ingeniería de Software en la UPC (7.º ciclo), Lima, Perú. Desarrollo aplicaciones full-stack y móviles, y trabajo en un sistema de Machine Learning y NLP para evaluar promociones internas en empresas de software.</p>
+      <div class="hero-cta">
+        <a class="btn btn-solid" href="#proyectos">Ver proyectos</a>
+        <a class="btn btn-ghost" href="#contacto">Contactarme</a>
+      </div>
+    </div>
+    <div class="hex-panel">
+      <svg viewBox="0 0 300 300">
+        <polygon points="150,20 220,60 220,140 150,180 80,140 80,60" fill="none" stroke="#24302C" stroke-width="1.5"/>
+        <polygon points="150,60 195,85 195,135 150,160 105,135 105,85" fill="none" stroke="#5FE1C0" stroke-width="1.6"/>
+        <polygon points="150,90 172,102 172,127 150,140 128,127 128,102" fill="#5FE1C0" opacity="0.85"/>
+        <text x="150" y="205" text-anchor="middle" class="hex-stat-n" style="font-size:26px;">04</text>
+        <text x="150" y="225" text-anchor="middle" class="hex-stat">proyectos aplicados</text>
+        <text x="150" y="255" text-anchor="middle" class="hex-stat-n" style="font-size:26px;">7.º</text>
+        <text x="150" y="275" text-anchor="middle" class="hex-stat">ciclo · UPC</text>
+      </svg>
+    </div>
+  </div>
+</header>
+
+<section id="sobre-mi">
+  <div class="wrap">
+    <div class="sec-head"><span class="sec-num">01</span><h2 class="sec-title">Sobre mí</h2></div>
+    <p class="about-body">Me enfoco en <strong>resolver problemas reales con software bien pensado</strong>: desde apps móviles offline-first hasta sistemas de decisión asistidos por Machine Learning. He trabajado con arquitecturas de microservicios, auditorías de seguridad de código y datos geoespaciales. Me interesa particularmente el punto de encuentro entre desarrollo de producto y análisis de datos aplicado — construir herramientas que ayuden a tomar mejores decisiones, no solo que "funcionen".</p>
+  </div>
+</section>
+
+<section id="proyectos">
+  <div class="wrap">
+    <div class="sec-head"><span class="sec-num">02</span><h2 class="sec-title">Proyectos</h2></div>
+
+    <div class="commit">
+      <div class="commit-meta"><span class="hash">#f0o8ly</span><span class="branch">main</span></div>
+      <div>
+        <h3>Foodly — descubrimiento de huariques</h3>
+        <p>App de descubrimiento de restaurantes locales con visualización geoespacial en tiempo real. Construí vistas para dueños de negocio y una capa de hexágonos H3 sobre Mapbox para representar zonas de demanda, resolviendo problemas de autenticación JWT y proxy entre frontend y microservicios.</p>
+        <div class="stack"><span>Vue 3</span><span>Jakarta EE</span><span>Mapbox / H3</span><span>Redis</span><span>ActiveMQ</span></div>
+      </div>
+    </div>
+
+    <div class="commit">
+      <div class="commit-meta"><span class="hash">#j0bsy</span><span class="branch">main</span></div>
+      <div>
+        <h3>Jobsy — plataforma de match laboral</h3>
+        <p>Plataforma de conexión entre candidatos y ofertas laborales. Documenté el proyecto con metodología Lean UX/XDPD y realicé una auditoría de seguridad a un equipo par, detectando endpoints sin autorización, credenciales expuestas y vulnerabilidades IDOR.</p>
+        <div class="stack"><span>Vue 3</span><span>.NET 9</span><span>Lean UX / XDPD</span></div>
+      </div>
+    </div>
+
+    <div class="commit">
+      <div class="commit-meta"><span class="hash">#r34dy</span><span class="branch">tesis</span></div>
+      <div>
+        <h3>Sistema de evaluación de ascensos internos</h3>
+        <p>Proyecto de tesis: sistema de soporte a decisión para evaluar promociones internas en fábricas de software. Extrae competencias de CVs (OCR + NER) y las combina con evaluaciones del Tech Lead en un modelo supervisado que genera un "Readiness Score" explicable con SHAP, con metas de F1 ≥ 80% y de reducción de tiempo de RR.HH. ≥ 60%.</p>
+        <div class="stack"><span>NLP</span><span>Random Forest / XGBoost</span><span>SHAP</span></div>
+      </div>
+    </div>
+
+    <div class="commit">
+      <div class="commit-meta"><span class="hash">#f1nz</span><span class="branch">personal</span></div>
+      <div>
+        <h3>Tracker de finanzas personales</h3>
+        <p>App móvil offline-first para registrar ingresos y gastos, con sincronización en la nube y Quick Settings Tiles de Android para registro rápido de movimientos sin abrir la app.</p>
+        <div class="stack"><span>Flutter</span><span>Supabase</span><span>Drift / SQLite</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="habilidades">
+  <div class="wrap">
+    <div class="sec-head"><span class="sec-num">03</span><h2 class="sec-title">Habilidades</h2></div>
+    <div class="skill-group">
+      <h4>lenguajes</h4>
+      <div class="chips"><span class="chip">JavaScript</span><span class="chip">Python</span><span class="chip">C++</span><span class="chip">SQL</span><span class="chip">Dart</span></div>
+    </div>
+    <div class="skill-group">
+      <h4>frontend &amp; móvil</h4>
+      <div class="chips"><span class="chip">Vue 3</span><span class="chip">Flutter</span><span class="chip">HTML / CSS</span></div>
+    </div>
+    <div class="skill-group">
+      <h4>backend &amp; datos</h4>
+      <div class="chips"><span class="chip">.NET 9</span><span class="chip">Jakarta EE</span><span class="chip">Supabase</span><span class="chip">Redis</span><span class="chip">ActiveMQ</span><span class="chip">Mapbox / H3</span></div>
+    </div>
+    <div class="skill-group">
+      <h4>práctica</h4>
+      <div class="chips"><span class="chip">Scrum</span><span class="chip">Lean UX / XDPD</span><span class="chip">Git</span></div>
+    </div>
+  </div>
+</section>
+
+<section id="experiencia">
+  <div class="wrap">
+    <div class="sec-head"><span class="sec-num">04</span><h2 class="sec-title">Experiencia</h2></div>
+    <div class="timeline">
+      <div class="tl-item">
+        <div class="tl-date">abr 2023 — mar 2024</div>
+        <h3>Tutor de Programación · Independiente</h3>
+        <p>Tutorías grupales de Programación Orientada a Objetos, SQL, estructuras de datos y metodologías ágiles con C++, además de fundamentos de HTML, CSS y JavaScript para estudiantes de primeros ciclos.</p>
+      </div>
+      <div class="tl-item">
+        <div class="tl-date">dic 2024 — mar 2025</div>
+        <h3>Reponedor · Plaza Vea</h3>
+        <p>Organización y reposición de productos, atención a clientes y trabajo en equipo en un entorno dinámico y orientado al servicio.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="contacto">
+  <div class="wrap">
+    <div class="contact-box">
+      <h2>Hablemos de tu próximo proyecto.</h2>
+      <p>Estoy buscando una posición de practicante en desarrollo de software. Si mi perfil encaja con lo que buscas, escríbeme.</p>
+      <div class="contact-links">
+        <a class="btn btn-solid" href="mailto:fabriciovga16@gmail.com">fabriciovga16@gmail.com</a>
+        <a class="btn btn-ghost" href="tel:+51919158377">+51 919 158 377</a>
+        <a class="btn btn-ghost" href="https://linkedin.com/in/tu-usuario">LinkedIn</a>
+        <a class="btn btn-ghost" href="https://github.com/tu-usuario">GitHub</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <p>Fabricio Samir Vega Coronado — Lima, Perú</p>
+</footer>
+
+</body>
+</html>
